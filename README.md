@@ -1,4 +1,4 @@
-# LEMP
+# LEMP (NGiNX)
 LEMP Install and Uninstall Script
 
 ## Install
