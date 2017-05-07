@@ -1,5 +1,5 @@
 # LEMP
-LAMP Install and Uninstall Script
+LEMP Install and Uninstall Script
 
 ## Install
 1. Copy script by using `wget https://raw.githubusercontent.com/saaiful/LEMP/master/install.sh`
