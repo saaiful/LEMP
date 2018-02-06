@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # LEMP installation script
 # Author: Saiful Islam
+echo 'Acquire::ForceIPv4 "true";' | tee /etc/apt/apt.conf.d/99force-ipv4
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt-get -y update
 sudo apt-get -y upgrade
