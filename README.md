@@ -29,3 +29,9 @@ LEMP Install and Uninstall Script
 ## Uninstall
 1. Copy script by using `wget https://raw.githubusercontent.com/saaiful/LEMP/master/uninstall.sh`
 2. Run using `sudo bash uninstall.sh`
+
+## Install Composer
+
+```
+sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+```
