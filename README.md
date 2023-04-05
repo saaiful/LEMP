@@ -44,6 +44,11 @@ LEMP stack is a combination of software used to build and deploy web application
 2. Run using `sudo bash install-php-8.2.sh`
 3. MySQL password can be found in `mysql_cred.txt` in server root
 
+## Install (php 7.0 - 8.2)
+1. Copy script by using `wget https://raw.githubusercontent.com/saaiful/LEMP/master/install-php-all.sh`
+2. Run using `sudo bash install-php-all.sh`
+3. MySQL password can be found in `mysql_cred.txt` in server root
+
 ## Uninstall
 1. Copy script by using `wget https://raw.githubusercontent.com/saaiful/LEMP/master/uninstall.sh`
 2. Run using `sudo bash uninstall.sh`
