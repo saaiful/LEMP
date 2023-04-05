@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # LEMP installation script
 # Author: Saiful Islam
+
+if dpkg-query -W needrestart >/dev/null 2>&1; then
+    sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+fi
+
 echo 'Acquire::ForceIPv4 "true";' | tee /etc/apt/apt.conf.d/99force-ipv4
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt-get -y update
@@ -70,3 +75,9 @@ EOL
 sudo service php8.0-fpm reload
 sudo service nginx stop
 sudo service nginx start
+
+echo  "Installing Composer\n";
+sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+
+echo "Installing Redis";
+sudo apt install redis-server -y
