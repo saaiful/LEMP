@@ -35,3 +35,8 @@ LEMP Install and Uninstall Script
 ```
 sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
+
+## Install Redis
+```
+sudo apt install redis-server
+```
