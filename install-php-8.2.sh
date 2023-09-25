@@ -20,7 +20,7 @@ sudo apt-get -y install mysql-server
 echo $NEW_PASS > mysql_cred.txt
 
 sudo apt-get install -y mysql-server
-sudo apt-get install -y php8.2-fpm php8.2-cli php8.2-curl php8.2-mbstring php8.2-xml php8.2-zip php8.2-mysql php8.2-imagick php8.2-gd
+sudo apt-get install -y php8.2-fpm php8.2-cli php8.2-curl php8.2-mbstring php8.2-xml php8.2-zip php8.2-mysql php8.2-imagick php8.2-gd php8.2-intl
 sudo sed -i s/\;cgi\.fix_pathinfo\s*\=\s*1/cgi.fix_pathinfo\=0/ /etc/php/8.2/fpm/php.ini
 
 sudo cat >  /var/www/html/index.html << EOL
