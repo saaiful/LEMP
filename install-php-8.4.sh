@@ -103,3 +103,20 @@ sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr
 
 echo "Installing Redis";
 sudo apt install redis-server -y
+
+echo "Installting NVM";
+# Install NVM
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+# Load NVM for the current session
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  . "$NVM_DIR/nvm.sh"
+else
+  echo "NVM was not found after install."
+  exit 1
+fi
+
+# Install and use Node.js 20
+nvm install 20
+nvm use 20
