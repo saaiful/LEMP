@@ -12,14 +12,22 @@ sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt-get install -y nginx
 
-#insttall mysql-server with password
+#install mariadb-server with password
 NEW_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password "$NEW_PASS
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password "$NEW_PASS
-sudo apt-get -y install mysql-server
-echo $NEW_PASS > mysql_cred.txt
+sudo apt-get install -y mariadb-server
+sudo mysql -uroot <<MYSQL_SCRIPT
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${NEW_PASS}';
+FLUSH PRIVILEGES;
+MYSQL_SCRIPT
 
-sudo apt-get install -y mysql-server
+echo $NEW_PASS > mariadb_root_pass.txt
+
+# Add Adminer
+sudo mkdir -p /var/www/html/adminer
+sudo wget "https://www.adminer.org/latest-mysql-en.php" -O /var/www/html/adminer/index.php
+sudo chown -R www-data:www-data /var/www/html/adminer
+
+
 sudo apt-get install -y php8.3-fpm php8.3-cli php8.3-curl php8.3-mbstring php8.3-xml php8.3-zip php8.3-mysql php8.3-imagick php8.3-gd php8.3-intl
 sudo sed -i s/\;cgi\.fix_pathinfo\s*\=\s*1/cgi.fix_pathinfo\=0/ /etc/php/8.3/fpm/php.ini
 
@@ -54,22 +62,36 @@ sudo echo '<?php phpinfo(); ?>' > /var/www/html/info.php
 sudo echo "" > /etc/nginx/sites-available/default
 sudo cat > /etc/nginx/sites-available/default << EOL
 server {
-        listen 80 default_server;
-        server_name _;
-        root /var/www/html;
-        index index.html index.htm index.php;
-        location / {
-                try_files \$uri \$uri/ /index.html;
-        }
-        location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-        }
-        # redirect server error pages to the static page /50x.html
-        error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
-                root /var/www/html;
-        }
+	listen 80 default_server;
+	server_name _;
+	root /var/www/html;
+	index index.html index.htm index.php;
+	location / {
+			try_files \$uri \$uri/ /index.html;
+	}
+	
+	# Use custom path for secure access
+	# location /adminer {
+	# 	alias /var/www/html/adminer/;
+	# 	index index.php;
+	# 	location ~ ^/adminer/(.+\.php)$ {
+	# 		alias /var/www/html/adminer/$1;
+	# 		fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+	# 		include fastcgi_params;
+	# 		fastcgi_param SCRIPT_FILENAME $request_filename;
+	# 		fastcgi_param PATH_INFO $fastcgi_path_info;
+	# 	}
+	# }
+
+	location ~ \.php$ {
+			include snippets/fastcgi-php.conf;
+			fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+	}
+	# redirect server error pages to the static page /50x.html
+	error_page 500 502 503 504 /50x.html;
+	location = /50x.html {
+			root /var/www/html;
+	}
 }
 EOL
 sudo service php8.3-fpm reload
