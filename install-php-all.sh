@@ -21,7 +21,7 @@ echo $NEW_PASS > mysql_cred.txt
 
 sudo apt-get install -y mysql-server
 # Install PHP and required extensions for all versions between 7.0 and 8.2
-for VERSION in 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2; do
+for VERSION in 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4; do
     sudo apt-get install -y php$VERSION-fpm php$VERSION-cli php$VERSION-curl php$VERSION-mbstring php$VERSION-xml php$VERSION-zip php$VERSION-mysql php$VERSION-imagick php$VERSION-gd
     sudo sed -i "s/\;cgi\.fix_pathinfo\s*\=\s*1/cgi.fix_pathinfo\=0/" /etc/php/$VERSION/fpm/php.ini
 done
@@ -74,6 +74,8 @@ server {
                 #fastcgi_pass unix:/run/php/php8.0-fpm.sock;
                 #fastcgi_pass unix:/run/php/php8.1-fpm.sock;
                 fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+                fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+                fastcgi_pass unix:/run/php/php8.4-fpm.sock;
         }
         # redirect server error pages to the static page /50x.html
         error_page 500 502 503 504 /50x.html;
@@ -83,7 +85,7 @@ server {
 }
 EOL
 # Reload PHP-FPM service for all versions between 7.0 and 8.2
-for VERSION in 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2; do
+for VERSION in 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4; do
     sudo service php$VERSION-fpm reload
 done
 sudo service nginx stop
